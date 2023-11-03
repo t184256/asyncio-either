@@ -6,6 +6,6 @@
 When you have two coroutines to do the same thing, make use of both.
 """
 
-from asyncio_either._either import either
+from asyncio_either._either import either, or_
 
-__all__ = ['either']
+__all__ = ['either', 'or_']

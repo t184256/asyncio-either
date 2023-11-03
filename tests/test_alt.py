@@ -27,7 +27,7 @@ async def c() -> int:
     return 1
 
 
-@c.or_
+@asyncio_either.or_(c)
 async def c2() -> int:
     """Return 2."""
     log.append('>2')
@@ -37,7 +37,7 @@ async def c2() -> int:
     return 2
 
 
-@c.or_
+@asyncio_either.or_(c)
 async def c3() -> int:
     """Return 3."""
     log.append('>3')

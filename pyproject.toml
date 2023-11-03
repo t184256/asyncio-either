@@ -15,7 +15,7 @@ classifiers = [
 requires-python = ">=3.11"
 dependencies = [] # TODO: list python dependencies
 optional-dependencies.test = [
-  "pytest",
+  "pytest", "pytest-asyncio",
   "coverage", "pytest-cov",
   "mypy", "pytest-mypy",
   "ruff",
@@ -53,6 +53,8 @@ ignore = [
   "D213",  # multi-line-summary-second-line
 ]
 per-file-ignores."tests/**" = [
+  "D101",  # undocumented-public-class
+  "D102",  # undocumented-public-method
   "INP001",  # implicit-namespace-package
   "S101",  # assert
 ]

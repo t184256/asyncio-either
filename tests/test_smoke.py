@@ -17,7 +17,7 @@ async def mul(a: int, b: int) -> int:
     return a * b
 
 
-@mul.or_
+@asyncio_either.or_(mul)
 async def mul_alt(a: int, b: int) -> int:
     """Multiply two numbers in another way."""
     await asyncio.sleep(0.2)

@@ -1,5 +1,28 @@
 {
   "nodes": {
+    "awaitable-property": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1699272110,
+        "narHash": "sha256-dFhNRXtp7UU2epxfAzA9BKOozAXMD7g82hzdTlhI7EM=",
+        "owner": "t184256",
+        "repo": "awaitable-property",
+        "rev": "0ff23b99d40b49bc3550047066eb399fd21d3483",
+        "type": "github"
+      },
+      "original": {
+        "owner": "t184256",
+        "repo": "awaitable-property",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -33,6 +56,7 @@
     },
     "root": {
       "inputs": {
+        "awaitable-property": "awaitable-property",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
       }

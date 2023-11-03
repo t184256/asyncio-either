@@ -1,7 +1,13 @@
 {
   description = "When you have two coroutines to do the same thing, make use of both.";
 
-  outputs = { self, nixpkgs, flake-utils }:
+  inputs.awaitable-property = {
+    url = "github:t184256/awaitable-property";
+    inputs.nixpkgs.follows = "nixpkgs";
+    inputs.flake-utils.follows = "flake-utils";
+  };
+
+  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
     let
       deps = pyPackages: with pyPackages; [
         # TODO: list python dependencies
@@ -10,6 +16,7 @@
         pytest pytestCheckHook pytest-asyncio
         coverage pytest-cov
         mypy pytest-mypy
+        awaitable-property
       ] ++ [pkgs.ruff]);
 
       fresh-mypy-overlay = final: prev: {
@@ -52,6 +59,7 @@
       };
 
       overlay-all = nixpkgs.lib.composeManyExtensions [
+        inputs.awaitable-property.overlays.default
         asyncio-either-overlay
         fresh-mypy-overlay
       ];

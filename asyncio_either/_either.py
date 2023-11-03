@@ -12,7 +12,7 @@ _Coroutine = typing.Coroutine[typing.Any, typing.Any, _T]
 _Corofunc = typing.Callable[_P, _Coroutine[_T]]
 
 
-def either(corofunc: _Corofunc[_P, _T]) -> _Corofunc[_P, _T]:
+def either(*corofuncs: _Corofunc[_P, _T]) -> _Corofunc[_P, _T]:
     """Augment a coroutine so that alternatives can be specified.
 
     ```
@@ -29,7 +29,7 @@ def either(corofunc: _Corofunc[_P, _T]) -> _Corofunc[_P, _T]:
 
     Does nothing to verify that the values are in agreement.
     """
-    _alternatives = [corofunc]
+    _alternatives = list(corofuncs)
 
     def or_(corofunc: _Corofunc[_P, _T]) -> None:
         _alternatives.append(corofunc)
@@ -55,13 +55,14 @@ def either(corofunc: _Corofunc[_P, _T]) -> _Corofunc[_P, _T]:
 
 def or_(
     corofunc: _Corofunc[_P, _T],
-) -> typing.Callable[[_Corofunc[_P, _T]], None]:
+) -> typing.Callable[[_Corofunc[_P, _T]], _Corofunc[_P, _T]]:
     while hasattr(corofunc, '__wrapped__') and not hasattr(corofunc, 'or_'):
         corofunc = corofunc.__wrapped__
     assert hasattr(corofunc, 'or_')  # noqa: S101
 
-    def decorator(corofunc_alt: _Corofunc[_P, _T]) -> None:
+    def decorator(corofunc_alt: _Corofunc[_P, _T]) -> _Corofunc[_P, _T]:
         corofunc.or_(corofunc_alt)
+        return corofunc_alt
 
     return decorator
 

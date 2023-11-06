@@ -19,7 +19,7 @@ optional-dependencies.test = [
   "coverage", "pytest-cov",
   "mypy", "pytest-mypy",
   "ruff",
-  "awaitable-property@git+https://github.com/t184256/awaitable-property#egg=04f9b1d9bf6824bc89e553f7f45448038e7170c9",
+  "awaitable-property@git+https://github.com/t184256/awaitable-property#egg=a0b3b06b7a82c965ae0bb1d59f6e386fe755001d",
 ]
 
 [tool.setuptools.package-data]

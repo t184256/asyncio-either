@@ -25,7 +25,7 @@ class Example:
     # > Class methods can no longer wrap other descriptors such as property().
 
     @classmethod
-    @asyncio_either.either
+    @asyncio_either.either()
     async def cm(cls) -> tuple[int, type[typing.Self]]:
         await asyncio.Event().wait()
         return 1, cls

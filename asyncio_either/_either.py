@@ -4,6 +4,7 @@
 """Main module of asyncio_either."""
 
 import asyncio
+import contextlib
 import os
 import typing
 
@@ -116,6 +117,9 @@ def _either_multi(
         res = finished.pop().result()
         for task in unfinished:
             task.cancel()
+        for task in unfinished:
+            with contextlib.suppress(asyncio.CancelledError):
+                await task
         return res
 
     _return_first.or_ = or_  # type: ignore[attr-defined]

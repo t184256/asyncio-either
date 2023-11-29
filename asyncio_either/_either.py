@@ -69,7 +69,7 @@ def either(
 
 
 def _either_single(
-    wait_for_all: bool | None = None,
+    wait_for_all: bool | None = None,  # noqa: FBT001
 ) -> typing.Callable[[_Corofunc[_P, _T]], _Corofunc[_P, _T]]:
     def decorator(coro: _Corofunc[_P, _T]) -> _Corofunc[_P, _T]:
         return _either_multi(coro, wait_for_all=wait_for_all)

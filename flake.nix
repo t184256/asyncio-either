@@ -26,13 +26,13 @@
               if prev.lib.versionAtLeast pyPrev.mypy.version "1.7.0"
               then pyPrev.mypy
               else pyPrev.mypy.overridePythonAttrs (_: {
-                version = "1.7.0";
+                version = "1.8.0";
                 patches = [];
                 src = prev.fetchFromGitHub {
                   owner = "python";
                   repo = "mypy";
-                  rev = "refs/tags/v1.7.0";
-                  hash = "sha256-2GUEBK3e0GkLFaEg03iSOea2ubvAfcCtVQc06dcqnlE=";
+                  rev = "refs/tags/v1.8.0";
+                  hash = "sha256-1YgAswqLadOVV5ZSi5ZXWYK3p114882IlSx0nKChGPs=";
                 };
               });
           })];

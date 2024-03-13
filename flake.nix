@@ -9,25 +9,34 @@
 
   outputs = { self, nixpkgs, flake-utils, ... }@inputs:
     let
-      deps = pyPackages: with pyPackages; [
+      pyDeps = pyPackages: with pyPackages; [
         # TODO: list python dependencies
       ];
-      tools = pkgs: pyPackages: (with pyPackages; [
+      pyTestDeps = pyPackages: with pyPackages; [
         pytest pytestCheckHook pytest-asyncio
         coverage pytest-cov
-        mypy pytest-mypy
         awaitable-property
-      ] ++ [pkgs.ruff]);
+      ];
+      pyTools = pyPackages: with pyPackages; [ mypy ];
+
+      tools = pkgs: with pkgs; [
+        pre-commit
+        ruff
+        codespell
+        actionlint
+        python3Packages.pre-commit-hooks
+      ];
 
       asyncio-either-package = {pkgs, python3Packages}:
         python3Packages.buildPythonPackage {
           pname = "asyncio-either";
           version = "0.0.1";
           src = ./.;
+          disabled = python3Packages.pythonOlder "3.11";
           format = "pyproject";
-          propagatedBuildInputs = deps python3Packages;
-          nativeBuildInputs = [ python3Packages.setuptools ];
-          checkInputs = tools pkgs python3Packages;
+          build-system = [ python3Packages.setuptools ];
+          propagatedBuildInputs = pyDeps python3Packages;
+          checkInputs = pyTestDeps python3Packages;
         };
 
       asyncio-either-overlay = final: prev: {
@@ -55,9 +64,17 @@
         in
         {
           devShells.default = pkgs.mkShell {
-            buildInputs = [(defaultPython3Packages.python.withPackages deps)];
-            nativeBuildInputs = tools pkgs defaultPython3Packages;
+            buildInputs = [(defaultPython3Packages.python.withPackages (
+              pyPkgs: pyDeps pyPkgs ++ pyTestDeps pyPkgs ++ pyTools pyPkgs
+            ))];
+            nativeBuildInputs = [(pkgs.buildEnv {
+              name = "asyncio-either-tools-env";
+              pathsToLink = [ "/bin" ];
+              paths = tools pkgs;
+            })];
             shellHook = ''
+              [ -e .git/hooks/pre-commit ] || \
+                echo "suggestion: pre-commit install --install-hooks" >&2
               export PYTHONASYNCIODEBUG=1 PYTHONWARNINGS=error
             '';
           };

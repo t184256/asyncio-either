@@ -40,7 +40,6 @@ report.fail_under = 100
 
 [tool.mypy]
 strict = true
-new_type_inference = true
 
 [tool.ruff]
 line-length = 79
